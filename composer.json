@@ -19,7 +19,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Scaffolding": "src/"
+            "Scaffolding\\": "src/"
         }
     },
     "scripts": {
