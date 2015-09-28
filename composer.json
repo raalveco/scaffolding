@@ -18,16 +18,16 @@
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
-        "psr-0": {
-            "Scaffolding": "src"
+        "psr-4": {
+            "Scaffolding": "src/"
         }
     },
     "scripts": {
         "post-install-cmd": [
-            "php artisan vendor:publish --tag=scaffolding --force"
+            "php artisan vendor:publish --tag=scaffolding"
         ],
         "post-update-cmd": [
-            "php artisan vendor:publish --tag=scaffolding --force"
+            "php artisan vendor:publish --tag=scaffolding"
         ]
     }
 }

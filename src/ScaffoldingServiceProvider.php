@@ -12,8 +12,7 @@ class ScaffoldingServiceProvider extends ServiceProvider {
 	public function boot()
 	{
         $this->publishes([
-            __DIR__.'/metronic' => public_path('metronic'),
-            __DIR__.'/templates' => public_path('scaffolding/templates'),
+            __DIR__.'/metronic' => public_path('metronic')
         ], 'scaffolding');
 	}
 
