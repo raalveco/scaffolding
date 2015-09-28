@@ -541,7 +541,7 @@ class ScaffoldCommand extends Command {
                 }
             }
 
-            if($field->type = "string") {
+            if($field->type == "string") {
                 $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
@@ -553,7 +553,7 @@ class ScaffoldCommand extends Command {
                         ';
             }
 
-            if($field->type = "integer") {
+            if($field->type == "integer") {
                 $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
@@ -565,7 +565,7 @@ class ScaffoldCommand extends Command {
                         ';
             }
 
-            if($field->type = "integer") {
+            if($field->type == "decimal") {
                 $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
