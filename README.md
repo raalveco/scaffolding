@@ -1,8 +1,8 @@
-# Scaffold Generator - Laravel 5 &amp; Metronic Template
+## Scaffold Generator - Laravel 5 &amp; Metronic Template
 
 Documentation for the Laravel Framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Instalation & Configuration
+### Instalation & Configuration
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `raalveco/scaffolding` and the publish the scaffolding with the instruction `php artisan vendor:publish --tag=scaffolding`.
 
