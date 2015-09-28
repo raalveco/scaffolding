@@ -807,8 +807,12 @@ class ScaffoldCommand extends Command {
                 $value = rand(5,100) / 37;
             }
 
-            $fields_create .= "'".$field->name."'".' => "'.$value.'",
-                ';
+            if($field->type == "boolean"){
+                $value = rand(0,1);
+            }
+
+            $fields_create .= "'".$field->name."'".' => '.$value.',
+                    ';
         }
 
         $fields_create = trim($fields_create);
