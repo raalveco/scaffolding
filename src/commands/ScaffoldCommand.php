@@ -1,11 +1,11 @@
-<?php namespace Scaffolding;
+<?php namespace Scaffolding\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Scaffold extends Command {
+class ScaffoldCommand extends Command {
 
     protected $name = 'make:scaffold';
     protected $description = 'Command description.';
@@ -32,16 +32,16 @@ class Scaffold extends Command {
     {
         parent::__construct();
 
-        $this->schema_template = file_get_contents(__DIR__."/templates/schema.txt");
-        $this->migration_template = file_get_contents(__DIR__."/templates/migration.txt");
-        $this->model_template = file_get_contents(__DIR__."/templates/model.txt");
-        $this->controller_template = file_get_contents(__DIR__."/templates/controller.txt");
-        $this->lang_template = file_get_contents(__DIR__."/templates/lang.txt");
-        $this->route_template = file_get_contents(__DIR__."/templates/route.txt");
+        $this->schema_template = file_get_contents(__DIR__."/../templates/schema.txt");
+        $this->migration_template = file_get_contents(__DIR__."/../templates/migration.txt");
+        $this->model_template = file_get_contents(__DIR__."/../templates/model.txt");
+        $this->controller_template = file_get_contents(__DIR__."/../templates/controller.txt");
+        $this->lang_template = file_get_contents(__DIR__."/../templates/lang.txt");
+        $this->route_template = file_get_contents(__DIR__."/../templates/route.txt");
 
-        $this->index_template = file_get_contents(__DIR__."/templates/index.txt");
-        $this->new_template = file_get_contents(__DIR__."/templates/new.txt");
-        $this->edit_template = file_get_contents(__DIR__."/templates/edit.txt");
+        $this->index_template = file_get_contents(__DIR__."/../templates/index.txt");
+        $this->new_template = file_get_contents(__DIR__."/../templates/new.txt");
+        $this->edit_template = file_get_contents(__DIR__."/../templates/edit.txt");
     }
 
     public function init($model_name, $plural_name){

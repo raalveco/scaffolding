@@ -1,6 +1,7 @@
 <?php namespace Scaffolding;
 
 use Illuminate\Support\ServiceProvider;
+use Scaffolding\Commands\ScaffoldCommand;
 
 class ScaffoldingServiceProvider extends ServiceProvider {
 
@@ -25,7 +26,7 @@ class ScaffoldingServiceProvider extends ServiceProvider {
 	{
         $this->app['scaffolding.scaffold'] = $this->app->share(function($app)
         {
-            return new Scaffold();
+            return new ScaffoldCommand();
         });
 
         $this->commands('scaffolding.scaffold');
