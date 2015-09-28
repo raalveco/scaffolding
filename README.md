@@ -14,7 +14,7 @@ Begin by installing this package through Composer. Edit your project's `composer
 		"post-update-cmd": [
 			"php artisan vendor:publish --tag=scaffolding"
 		]
-  }
+	}
 
 The next step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
 
