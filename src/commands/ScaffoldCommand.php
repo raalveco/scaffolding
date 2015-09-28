@@ -87,7 +87,7 @@ class ScaffoldCommand extends Command {
         file_put_contents(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name)."/new.blade.php", $this->new_template);
         file_put_contents(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name)."/edit.blade.php", $this->edit_template);
 
-        $src = __DIR__."/../templates/layout";
+        $src = __DIR__."/../layout";
         $dest = base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "");
 
         shell_exec("cp -r $src $dest");
