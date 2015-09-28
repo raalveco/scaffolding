@@ -17,54 +17,54 @@
                 <!-- END SIDEBAR TOGGLER BUTTON -->
             </li>
             <br>
-            <li class="start {{ isset($menu) && $menu == 'users' ? 'active open' : '' }}">
+            <li class="start {{ isset($menu) && $menu == 'menu1' ? 'active open' : '' }}">
                 <a href="javascript:;">
                     <i class="fa fa-users"></i>
-                    <span class="title">Usuarios</span>
+                    <span class="title">Menu 1</span>
                     <span class="selected"></span>
                     <span class="arrow open"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="{{ isset($submenu) && $submenu == 'users' ? 'active' : '' }}">
-                        <a href="/admin/users"><i class="fa fa-user"></i> Usuarios</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu1' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-user"></i> SubMenu 1.1</a>
                     </li>
-                    <li class="{{ isset($submenu) && $submenu == 'sellers' ? 'active' : '' }}">
-                        <a href="/admin/users/sellers"><i class="fa fa-user"></i> Vendedores</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu2' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-users"></i> SubMenu 1.2</a>
                     </li>
-                    <li class="{{ isset($submenu) && $submenu == 'roles' ? 'active' : '' }}">
-                        <a href="/admin/roles"><i class="fa fa-lock"></i> Roles</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu3' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-users"></i> SubMenu 1.3</a>
                     </li>
                 </ul>
             </li>
-            <li class="start {{ isset($menu) && $menu == 'products' ? 'active open' : '' }}">
+            <li class="{{ isset($menu) && $menu == 'menu2' ? 'active open' : '' }}">
                 <a href="javascript:;">
                     <i class="fa fa-users"></i>
-                    <span class="title">Productos</span>
+                    <span class="title">Menu 2</span>
                     <span class="selected"></span>
                     <span class="arrow open"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="{{ isset($submenu) && $submenu == 'new_product' ? 'active' : '' }}">
-                        <a href="/admin/products/create"><i class="fa fa-user"></i> Nuevo Producto</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu1' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-user"></i> SubMenu 2.1</a>
                     </li>
-                    <li class="{{ isset($submenu) && $submenu == 'products' ? 'active' : '' }}">
-                        <a href="/admin/products"><i class="fa fa-user"></i> Todos los Productos</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu2' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-users"></i> SubMenu 2.2</a>
                     </li>
                 </ul>
             </li>
-            <li class="start {{ isset($menu) && $menu == 'marketing' ? 'active open' : '' }}">
+            <li class="{{ isset($menu) && $menu == 'menu3' ? 'active open' : '' }}">
                 <a href="javascript:;">
                     <i class="fa fa-users"></i>
-                    <span class="title">Marketing</span>
+                    <span class="title">Menu 2</span>
                     <span class="selected"></span>
                     <span class="arrow open"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="{{ isset($submenu) && $submenu == 'new_slider' ? 'active' : '' }}">
-                        <a href="/admin/marketing/sliders/create"><i class="fa fa-user"></i> Nueva Presentación</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu1' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-user"></i> SubMenu 3.1</a>
                     </li>
-                    <li class="{{ isset($submenu) && $submenu == 'sliders' ? 'active' : '' }}">
-                        <a href="/admin/marketing/sliders"><i class="fa fa-user"></i> Presentaciones</a>
+                    <li class="{{ isset($submenu) && $submenu == 'submenu2' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-users"></i> SubMenu 3.2</a>
                     </li>
                 </ul>
             </li>

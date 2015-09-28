@@ -1,4 +1,4 @@
-@extends('backend.layout.master')
+@extends('layout.master')
 @section('meta')
 	<meta charset="utf-8"/>
 	<title>{{Config::get("project.name")}}</title>
@@ -82,7 +82,7 @@
 	</div>
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container">
-		<?php echo View::make("backend.layout.partials.menu"); ?>
+		<?php echo View::make("layout.partials.menu"); ?>
 		<!-- BEGIN CONTENT -->
 		<div class="page-content-wrapper">
 			<div class="page-content">
