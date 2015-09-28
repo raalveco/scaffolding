@@ -318,8 +318,6 @@ class ScaffoldCommand extends Command {
     }
 
     public function makeTranslate(){
-        $this->lang_template = file_get_contents(public_path()."/templates/lang.txt");
-
         $fields_lang = "";
         if($this->fields) foreach($this->fields as $field){
             $fields_lang .= '"'.$field->name.'" => "'.Str::title($field->name).'",
