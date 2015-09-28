@@ -23,4 +23,4 @@ The next step is to add the service provider. Open `config/app.php`, and add a n
 
 Next, update Composer from the Terminal:
 
-    composer update --dev
+    composer update
