@@ -796,19 +796,19 @@ class ScaffoldCommand extends Command {
         if($this->fields) foreach($this->fields as $field){
             $value = "";
             if($field->type == "string"){
-                $value = "'".Str::random()."'";
+                $value = "Str::random()";
             }
 
             if($field->type == "integer"){
-                $value = rand(5,100);
+                $value = "rand(5,100)";
             }
 
             if($field->type == "decimal"){
-                $value = rand(5,100) / 37;
+                $value = "rand(5,500) / 5";
             }
 
             if($field->type == "boolean"){
-                $value = rand(0,1);
+                $value = "rand(0,1)";
             }
 
             $fields_create .= "'".$field->name."'".' => '.$value.',
