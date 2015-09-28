@@ -1,0 +1,56 @@
+@extends('$PREFIX_VIEW$layout.base')
+
+@section('view')
+<h3 class="page-title">
+    {{ trans('$UPDATE_TITLE$') }}
+</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption"></div>
+                <div class="tools"></div>
+            </div>
+            <div class="portlet-body form">
+                <form action="$PREFIX_URL$/$TABLE$/update" method="post" id="form_$TABLE$" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="id" value="{{ $$TABLE_SINGULAR$->id }}">
+                    <div class="form-body">
+                        $FIELDS$
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-3" style="text-align: left;">
+                                <a href="$PREFIX_URL$/$TABLE$" class="btn default">{{ trans('$TABLE$.buttons.cancel') }}</a>
+                            </div>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-3" style="text-align: right;">
+                                <button type="submit" class="btn green">{{ trans('$TABLE$.buttons.update') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@stop
+
+@section('javascript_page')
+<script>
+    jQuery(document).ready(function($) {
+        var app = new App();
+
+        var rules = {
+            $RULES$
+        };
+
+        var messages = {
+            $MESSAGES$
+        };
+
+        app.formValidate('#form_$TABLE$', rules, messages);
+    });
+</script>
+@stop

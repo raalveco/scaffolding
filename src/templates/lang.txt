@@ -1,0 +1,19 @@
+<?php
+
+return [
+	'titles' => [
+        $TITLES$
+    ],
+	'fields' => [
+        $FIELDS$
+    ],
+	'buttons' => [
+        $BUTTONS$
+    ],
+	'notifications' => [
+        $NOTIFICATIONS$
+    ],
+	'validations' => [
+        $VALIDATIONS$
+    ]
+];

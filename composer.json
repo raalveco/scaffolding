@@ -1,0 +1,33 @@
+{
+    "name": "raalveco/scaffolding",
+    "description": "Scaffold Generator - Laravel & Metronic Template",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Annalicia Ostos",
+            "email": "nanita.ostos@gmail.com",
+            "role": "Project Manager"
+        },
+        {
+            "name": "Ramiro Vera",
+            "email": "raalveco@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "Scaffolding": "src"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php artisan vendor:publish --tag=scaffolding --force"
+        ],
+        "post-update-cmd": [
+            "php artisan vendor:publish --tag=scaffolding --force"
+        ]
+    }
+}

@@ -1,0 +1,124 @@
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
+
+$IMPORTS$
+
+class $CONTROLLER_NAME$ extends Controller {
+
+	public function __construct(){
+        parent::__construct();
+    }
+
+	public function index(){
+		$$TABLE$ = $MODEL$::all();
+
+        return View::make('$PREFIX_VIEW$$TABLE$.index')->with("$TABLE$", $$TABLE$);
+	}
+
+	public function create(){
+		return View::make('$PREFIX_VIEW$$TABLE$.new');
+	}
+
+	public function store(){
+	    $FIELDS_GET$
+		$VALIDATIONS$
+
+		$MODEL$::create(
+			array(
+				$FIELDS_CREATE$
+			)
+		);
+
+		Session::flash('success', trans("$TABLE$.notifications.register_successful"));
+
+		return Redirect::to("$PREFIX_URL$/$TABLE$");
+	}
+
+	public function edit($id){
+        $$TABLE_SINGULAR$ = $MODEL$::find($id);
+
+        if(!$$TABLE_SINGULAR$){
+            Session::flash('error', trans("$TABLE$.notifications.no_exists"));
+
+            return Redirect::to("$PREFIX_URL$/$TABLE$");
+        }
+
+        return View::make('$PREFIX_VIEW$$TABLE$.edit')->with("$TABLE_SINGULAR$", $$TABLE_SINGULAR$);
+	}
+
+	public function update(){
+        $$TABLE_SINGULAR$ = $MODEL$::find(Input::get("id"));
+
+        if(!$$TABLE_SINGULAR$){
+            Session::flash('error', trans("$TABLE$.notifications.no_exists"));
+
+            return Redirect::to("$PREFIX_URL$/$TABLE$");
+        }
+
+        $FIELDS_GET$
+        $VALIDATIONS_UPDATE$
+
+        $FIELDS_UPDATE$
+
+        $$TABLE_SINGULAR$->save();
+
+        Session::flash('success', trans("$TABLE$.notifications.update_successful"));
+
+        return Redirect::to("$PREFIX_URL$/$TABLE$");
+	}
+
+	public function active($id){
+        $$TABLE_SINGULAR$ = $MODEL$::find($id);
+
+        if(!$$TABLE_SINGULAR$){
+            Session::flash('error', trans("$TABLE$.notifications.no_exists"));
+
+            return Redirect::to("$PREFIX_URL$/$TABLE$");
+        }
+
+        $$TABLE_SINGULAR$->active = 1;
+        $$TABLE_SINGULAR$->save();
+
+        Session::flash('success', trans("$TABLE$.notifications.activated_successful"));
+
+        return Redirect::to("$PREFIX_URL$/$TABLE$");
+	}
+
+	public function deactive($id){
+        $$TABLE_SINGULAR$ = $MODEL$::find($id);
+
+        if(!$$TABLE_SINGULAR$){
+            Session::flash('error', trans("$TABLE$.notifications.no_exists"));
+
+            return Redirect::to("$PREFIX_URL$/$TABLE$");
+        }
+
+        $$TABLE_SINGULAR$->active = 0;
+        $$TABLE_SINGULAR$->save();
+
+        Session::flash('success', trans("$TABLE$.notifications.deactivated_successful"));
+
+        return Redirect::to("$PREFIX_URL$/$TABLE$");
+    }
+
+    public function destroy(){
+        $$TABLE_SINGULAR$ = $MODEL$::find(Input::get("id"));
+
+        if(!$$TABLE_SINGULAR$){
+            Session::flash('error', trans("$TABLE$.notifications.no_exists"));
+
+            return Redirect::to("$PREFIX_URL$/$TABLE$");
+        }
+
+        $$TABLE_SINGULAR$->delete();
+
+        Session::flash('success', trans("$TABLE$.notifications.delete_successful"));
+
+        return Redirect::to("$PREFIX_URL$/$TABLE$");
+    }
+}

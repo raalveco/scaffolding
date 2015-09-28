@@ -1,0 +1,6 @@
+
+
+Route::group([$PARAMS$], function()
+{
+    $ROUTES$
+});
