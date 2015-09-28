@@ -541,15 +541,41 @@ class ScaffoldCommand extends Command {
                 }
             }
 
-            $fields_new .= '<div class="form-group">
+            if($field->type = "string") {
+                $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
-                                {{ trans("'.Str::lower($this->plural_name).'.fields.'.Str::lower($field->name).'") }} '.$is_required.'
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="text" name="'.Str::lower($field->name).'" value="{{Input::old("'.Str::lower($field->name).'")}}" class="form-control"/>
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control"/>
                             </div>
                         </div>
                         ';
+            }
+
+            if($field->type = "integer") {
+                $fields_new .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control digits"/>
+                            </div>
+                        </div>
+                        ';
+            }
+
+            if($field->type = "integer") {
+                $fields_new .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control numeric"/>
+                            </div>
+                        </div>
+                        ';
+            }
         }
 
         $fields_new = trim($fields_new);
@@ -770,7 +796,7 @@ class ScaffoldCommand extends Command {
         if($this->fields) foreach($this->fields as $field){
             $value = "";
             if($field->type == "string"){
-                $value = Str::random();
+                $value = "'".Str::random()."'";
             }
 
             if($field->type == "integer"){
