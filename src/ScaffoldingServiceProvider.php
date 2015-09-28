@@ -24,7 +24,12 @@ class ScaffoldingServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+        $this->app['scaffolding.scaffold'] = $this->app->share(function($app)
+        {
+            return new Scaffold();
+        });
+
+        $this->commands('scaffolding.scaffold');
 	}
 
 }

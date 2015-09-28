@@ -1,2 +1,1 @@
-# scaffolding
-Scaffold Generator - Laravel &amp; Metronic Template
+Scaffold Generator - Laravel 5 &amp; Metronic Template

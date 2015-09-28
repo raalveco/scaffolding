@@ -1,6 +1,6 @@
 {
     "name": "raalveco/scaffolding",
-    "description": "Scaffold Generator - Laravel & Metronic Template",
+    "description": "Scaffold Generator - Laravel 5 & Metronic Template",
     "type": "library",
     "license": "MIT",
     "authors": [
