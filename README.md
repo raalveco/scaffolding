@@ -1,6 +1,6 @@
 ## Scaffold Generator - Laravel 5 &amp; Metronic Template
 
-Documentation for the Laravel Framework can be found on the [Laravel website](http://laravel.com/docs).
+Documentation for the Laravel Framework can be found on the [Laravel website](http://laravel.com/docs/5.0).
 
 ### Instalation & Configuration
 

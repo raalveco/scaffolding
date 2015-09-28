@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+
+class $SEEDER_NAME$ extends Seeder {
+
+	public function run()
+	{
+		Model::unguard();
+
+		$times = 5;
+
+		for($i=0;$i<$times;$i++){
+		    $MODEL$::create(
+                array(
+                    $FIELDS_CREATE$
+                )
+            );
+		}
+	}
+
+}

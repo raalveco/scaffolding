@@ -21,6 +21,7 @@ class ScaffoldCommand extends Command {
     protected $index_template;
     protected $new_template;
     protected $edit_template;
+    protected $seed_template;
 
     protected $model_name;
     protected $plural_name;
@@ -34,6 +35,7 @@ class ScaffoldCommand extends Command {
 
         $this->schema_template = file_get_contents(__DIR__."/../templates/schema.txt");
         $this->migration_template = file_get_contents(__DIR__."/../templates/migration.txt");
+        $this->seed_template = file_get_contents(__DIR__."/../templates/seed.txt");
         $this->model_template = file_get_contents(__DIR__."/../templates/model.txt");
         $this->controller_template = file_get_contents(__DIR__."/../templates/controller.txt");
         $this->lang_template = file_get_contents(__DIR__."/../templates/lang.txt");
@@ -54,6 +56,7 @@ class ScaffoldCommand extends Command {
 
     public function saveFiles(){
         file_put_contents(base_path()."/database/migrations/".date("Y_m_d_His")."_create_table_".Str::lower($this->plural_name)."_table.php", $this->migration_template);
+        file_put_contents(base_path()."/database/seeds/".Str::title($this->plural_name)."Seeder.php", $this->seed_template);
 
         if(!file_exists(app_path()."/Models")){
             mkdir(app_path()."/Models");
@@ -760,6 +763,38 @@ class ScaffoldCommand extends Command {
         $this->edit_template = str_replace('$MESSAGES$', $messages_update, $this->edit_template);
     }
 
+    public function makeSeeder(){
+        $this->seed_template = str_replace('$SEEDER_NAME$', Str::title($this->plural_name)."Seeder", $this->seed_template);
+
+        $fields_create = "";
+        if($this->fields) foreach($this->fields as $field){
+            $value = "";
+            if($field->type == "string"){
+                $value = Str::random();
+            }
+
+            if($field->type == "integer"){
+                $value = rand(5,100);
+            }
+
+            if($field->type == "decimal"){
+                $value = rand(5,100) / 37;
+            }
+
+            $fields_create .= "'".$field->name."'".' => "'.$value.'",
+                ';
+        }
+
+        $fields_create = trim($fields_create);
+
+        if(Str::endsWith($fields_create, ",")){
+            $fields_create = substr($fields_create,0, strlen($fields_create) - 1);
+        }
+
+        $this->seed_template = str_replace('$FIELDS_CREATE$', trim($fields_create), $this->seed_template);
+        $this->seed_template = str_replace('$MODEL$', Str::title($this->model_name), $this->seed_template);
+    }
+
     public function setPrefix(){
         try{
             $prefix = $this->option("prefix");
@@ -845,6 +880,7 @@ class ScaffoldCommand extends Command {
 
         $this->makeMigration();
         $this->makeModel();
+        $this->makeSeeder();
         $this->makeController();
         $this->makeTranslate();
         $this->makeRoutes();
