@@ -1,6 +1,8 @@
-## Scaffold Generator - Laravel 5 &amp; Metronic Template
+## Scaffold Generator - Laravel 5
 
 Documentation for the Laravel Framework can be found on the [Laravel website](http://laravel.com/docs/5.0).
+
+It is mandatory to buy the regular license for the use of "metronic web template", you can do it here [Metronic Purchase Web] (http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469).
 
 ### Instalation & Configuration
 
