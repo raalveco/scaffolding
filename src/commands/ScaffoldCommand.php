@@ -595,7 +595,7 @@ class ScaffoldCommand extends Command {
 
             if($field->type == "boolean") {
                 if($field->name == "active"){
-                    if($this->active){
+                    if($this->active === true || $this->active == "true"){
                         $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
@@ -734,7 +734,7 @@ class ScaffoldCommand extends Command {
 
             if($field->type == "boolean") {
                 if($field->name == "active"){
-                    if($this->active){
+                    if($this->active === true || $this->active == "true"){
                         $fields_update .= '<div class="form-group">
                             <label class="control-label col-md-3">
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
