@@ -576,6 +576,18 @@ class ScaffoldCommand extends Command {
                         </div>
                         ';
             }
+
+            if($field->type == "boolean") {
+                $fields_new .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <input type="checkbox" name="activo" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
+                            </div>
+                        </div>
+                        ';
+            }
         }
 
         $fields_new = trim($fields_new);
