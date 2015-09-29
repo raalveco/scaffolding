@@ -173,7 +173,7 @@ class ScaffoldCommand extends Command {
         $fields_get = "";
         if($this->fields) foreach($this->fields as $field){
             if($field->type == "boolean"){
-                if($field->name == "active" && $this->active !== true || $this->active != "true"){
+                if($field->name == "active" && $this->active !== true && $this->active != "true"){
                     $fields_get .= '$'.$field->name.' = Input::has("'.$field->name.'") ? (Input::get("'.$field->name.'") ? 1 : 0) : 1;
         ';
                 }
@@ -306,7 +306,7 @@ class ScaffoldCommand extends Command {
 
         $fields_create = "";
         if($this->fields) foreach($this->fields as $field){
-            if($field->name == "active" && $this->active !== true || $this->active != "true") {
+            if($field->name == "active" && $this->active !== true && $this->active != "true") {
                 continue;
             }
 
@@ -324,7 +324,7 @@ class ScaffoldCommand extends Command {
 
         $fields_update = "";
         if($this->fields) foreach($this->fields as $field){
-            if($field->name == "active" && $this->active !== true || $this->active != "true") {
+            if($field->name == "active" && $this->active !== true && $this->active != "true") {
                 continue;
             }
             $fields_update .= "$".$this->model_name."->".$field->name.' = $'.$field->name.';
