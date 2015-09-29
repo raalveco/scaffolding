@@ -174,8 +174,7 @@ class ScaffoldCommand extends Command {
         if($this->fields) foreach($this->fields as $field){
             if($field->type == "boolean"){
                 if($field->name == "active" && $this->active !== true && $this->active != "true"){
-                    $fields_get .= '$'.$field->name.' = Input::has("'.$field->name.'") ? (Input::get("'.$field->name.'") ? 1 : 0) : 1;
-        ';
+                    continue;
                 }
                 else{
                     $fields_get .= '$'.$field->name.' = Input::has("'.$field->name.'") ? (Input::get("'.$field->name.'") ? 1 : 0) : 0;
