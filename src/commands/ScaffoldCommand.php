@@ -26,6 +26,7 @@ class ScaffoldCommand extends Command {
     protected $model_name;
     protected $plural_name;
     protected $prefix;
+    protected $active;
 
     protected $fillables;
 
@@ -44,6 +45,8 @@ class ScaffoldCommand extends Command {
         $this->index_template = file_get_contents(__DIR__."/../templates/index.txt");
         $this->new_template = file_get_contents(__DIR__."/../templates/new.txt");
         $this->edit_template = file_get_contents(__DIR__."/../templates/edit.txt");
+
+        $this->active = true;
     }
 
     public function init($model_name, $plural_name){
@@ -51,6 +54,7 @@ class ScaffoldCommand extends Command {
         $this->plural_name = $plural_name;
 
         $this->setPrefix();
+        $this->setActive();
         $this->getFields();
     }
 
@@ -120,14 +124,21 @@ class ScaffoldCommand extends Command {
                 }
             }
 
-            if($is_required){
-                $data_up .= '$table->'.$field->type.'(\''.$field->name.'\');
+            if($field->name == "active"){
+                $data_up .= '$table->'.$field->type.'(\''.$field->name.'\')->default(true);
             ';
             }
             else{
-                $data_up .= '$table->'.$field->type.'(\''.$field->name.'\')->nullable();
+                if($is_required){
+                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\');
             ';
+                }
+                else{
+                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\')->nullable();
+            ';
+                }
             }
+
         }
 
         $data_up .= '
@@ -860,6 +871,17 @@ class ScaffoldCommand extends Command {
         $this->prefix = $prefix;
     }
 
+    public function setActive(){
+        try{
+            $active = $this->option("active");
+        }
+        catch(\InvalidArgumentException $e){
+            $active = true;
+        }
+
+        $this->active = $active;
+    }
+
     public function getFields(){
         if($this->fields){
             return $this->fields;
@@ -967,6 +989,7 @@ class ScaffoldCommand extends Command {
         return [
             ['fields', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
             ['prefix', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
+            ['active', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
         ];
     }
 
