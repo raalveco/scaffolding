@@ -138,7 +138,6 @@ class ScaffoldCommand extends Command {
             ';
                 }
             }
-
         }
 
         $data_up .= '
@@ -917,8 +916,6 @@ class ScaffoldCommand extends Command {
         }
 
         $this->active = $active;
-
-        echo $active;
     }
 
     public function getFields(){
