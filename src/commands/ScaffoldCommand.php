@@ -583,7 +583,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="checkbox" name="activo" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
+                                <input type="checkbox" name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
                             </div>
                         </div>
                         ';
@@ -710,6 +710,18 @@ class ScaffoldCommand extends Command {
                             </div>
                         </div>
                         ';
+
+            if($field->type == "boolean") {
+                $fields_update .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <input type="checkbox"{{$'.Str::lower($this->model_name).'->'.Str::lower($field->name).' == 1 '."'".'checked="checked"'."'".' ? : }} name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
+                            </div>
+                        </div>
+                        ';
+            }
         }
 
         $fields_update = trim($fields_update);
