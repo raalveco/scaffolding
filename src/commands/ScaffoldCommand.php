@@ -97,9 +97,7 @@ class ScaffoldCommand extends Command {
         $src = __DIR__."/../layout";
         $dest = base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "");
 
-        if(!file_exists($dest)){
-            shell_exec("cp -r $src $dest");
-        }
+        shell_exec("cp -r $src $dest");
     }
 
     public function makeMigration(){
