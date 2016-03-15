@@ -163,7 +163,9 @@ class ScaffoldCommand extends Command {
 
             if(!empty($field->options)){
                 foreach($field->options as $option){
-                    if($option == "required"){
+                    $option = explode(":", $option);
+
+                    if(isset($option[0]) && $option[0] == "required"){
                         $is_required = true;
                     }
                 }
@@ -620,7 +622,8 @@ class ScaffoldCommand extends Command {
             if(!empty($field->options)){
                 foreach($field->options as $option){
                     $option = explode(":", $option);
-                    if($option[0] == "required"){
+
+                    if(isset($option[0]) && $option[0] == "required"){
                         $is_required = '<span class="required"> * </span>';
                     }
                 }
@@ -703,48 +706,48 @@ class ScaffoldCommand extends Command {
                 foreach($field->options as $option){
                     $option = explode(":", $option);
 
-                    if($option[0] == "required"){
+                    if(isset($option[0]) && $option[0] == "required"){
                         $rules_tmp .= '
                 required: true,';
                         $messages_tmp .= '
                 required: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.required") ?>",';
                     }
-                    if($option[0] == "email"){
+                    if(isset($option[0]) && $option[0] == "email"){
                         $rules_tmp .= '
                 email: true,';
                         $messages_tmp .= '
                 email: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.email") ?>",';
                     }
 
-                    if ($option[0] == "maxlength") {
+                    if (isset($option[0]) && $option[0] == "maxlength" && isset($option[1])) {
                         $rules_tmp .= '
                 maxlength: ' . $option[1] . ',';
                         $messages_tmp .= '
                 maxlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.maxlength") ?>",';
                     }
 
-                    if ($option[0] == "minlength") {
+                    if (isset($option[0]) && $option[0] == "minlength" && isset($option[1])) {
                         $rules_tmp .= '
                 minlength: ' . $option[1] . ',';
                         $messages_tmp .= '
                 minlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.minlength") ?>",';
                     }
 
-                    if ($option[0] == "max") {
+                    if (isset($option[0]) && $option[0] == "max" && isset($option[1])) {
                         $rules_tmp .= '
                 max: ' . $option[1] . ',';
                         $messages_tmp .= '
                 max: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.max") ?>",';
                     }
 
-                    if ($option[0] == "min") {
+                    if (isset($option[0]) && $option[0] == "min" && isset($option[1])) {
                         $rules_tmp .= '
                 min: ' . $option[1] . ',';
                         $messages_tmp .= '
                 min: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.min") ?>",';
                     }
 
-                    if ($option[0] == "between") {
+                    if (isset($option[0]) && $option[0] == "between" && isset($option[1]) && isset($option[2])) {
                         $rules_tmp .= '
                 range: [' . $option[1].", ". $option[2] . '],';
                         $messages_tmp .= '
@@ -835,7 +838,7 @@ class ScaffoldCommand extends Command {
                 foreach($field->options as $option){
                     $option = explode(":", $option);
 
-                    if($option[0] == "required"){
+                    if(isset($option[0]) && $option[0] == "required"){
                         $is_required = '<span class="required"> * </span>';
                     }
                 }
@@ -893,34 +896,48 @@ class ScaffoldCommand extends Command {
                 foreach ($field->options as $option) {
                     $option = explode(":", $option);
 
-                    if ($option[0] == "required") {
+                    if (isset($option[0]) && $option[0] == "required") {
                         $rules_tmp .= '
                 required: true,';
                         $messages_tmp .= '
                 required: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.required") ?>",';
                     }
-                    if ($option[0] == "email") {
+                    if (isset($option[0]) && $option[0] == "email") {
                         $rules_tmp .= '
                 email: true,';
                         $messages_tmp .= '
                 email: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.email") ?>",';
                     }
 
-                    if ($option[0] == "max") {
+                    if (isset($option[0]) && $option[0] == "maxlength" && isset($option[1])) {
+                        $rules_tmp .= '
+                maxlength: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                maxlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.maxlength") ?>",';
+                    }
+
+                    if (isset($option[0]) && $option[0] == "minlength" && isset($option[1])) {
+                        $rules_tmp .= '
+                minlength: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                minlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.minlength") ?>",';
+                    }
+
+                    if (isset($option[0]) && $option[0] == "max" && isset($option[1])) {
                         $rules_tmp .= '
                 max: ' . $option[1] . ',';
                         $messages_tmp .= '
                 max: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.max") ?>",';
                     }
 
-                    if ($option[0] == "min") {
+                    if (isset($option[0]) && $option[0] == "min" && isset($option[1])) {
                     $rules_tmp .= '
                 min: ' . $option[1] . ',';
                     $messages_tmp .= '
                 min: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.min") ?>",';
                     }
 
-                    if ($option[0] == "between") {
+                    if (isset($option[0]) && $option[0] == "between" && isset($option[1]) && isset($option[2])) {
                         $rules_tmp .= '
                 range: [' . $option[1].", ". $option[2] . '],';
                         $messages_tmp .= '
@@ -1058,15 +1075,17 @@ class ScaffoldCommand extends Command {
 
             $field->options = array();
 
-            $field_tmp[1] = str_replace("]","",$field_tmp[1]);
+            if(isset($field_tmp[1])){
+                $field_tmp[1] = str_replace("]","",$field_tmp[1]);
 
-            if($field_tmp[1]){
-                $field_rules = explode("|", $field_tmp[1]);
+                if($field_tmp[1]){
+                    $field_rules = explode("|", $field_tmp[1]);
 
-                $i = 0;
-                while(isset($field_rules[$i])){
-                    $field->options[$i] = $field_rules[$i];
-                    $i++;
+                    $i = 0;
+                    while(isset($field_rules[$i])){
+                        $field->options[$i] = $field_rules[$i];
+                        $i++;
+                    }
                 }
             }
 
@@ -1124,7 +1143,7 @@ class ScaffoldCommand extends Command {
 
         $this->saveFiles();
 
-        Artisan::call('dump-autoload');
+        shell_exec('composer dump-autoload');
     }
 
     protected function getArguments()
