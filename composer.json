@@ -18,9 +18,7 @@
     "autoload": {
         "classmap": [
             "src",
-            "src/commands",
-            "src/libraries",
-            "src/models"
+            "src/commands"
         ]
     },
     "minimum-stability": "dev",
