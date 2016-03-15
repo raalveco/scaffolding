@@ -1,6 +1,7 @@
 <?php namespace Raalveco\Scaffolding\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -1122,6 +1123,8 @@ class ScaffoldCommand extends Command {
         $this->makeEditView();
 
         $this->saveFiles();
+
+        Artisan::call('dump-autoload');
     }
 
     protected function getArguments()
