@@ -11,7 +11,7 @@ class $SEEDER_NAME$ extends Seeder {
 	{
 		Model::unguard();
 
-		$times = 5;
+		$times = 15;
 
 		for($i=0;$i<$times;$i++){
 		    $MODEL$::create(
