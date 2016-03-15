@@ -131,6 +131,16 @@ class ScaffoldCommand extends Command {
             $tmp_file = file_get_contents(__DIR__."/../templates/lang/validation.txt");
             file_put_contents(base_path()."/resources/lang/es/validation.php", $tmp_file);
         }
+
+        if(!file_exists(base_path()."/resources/lang/en/custom.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/en.txt");
+            file_put_contents(base_path()."/resources/lang/en/custom.php", $tmp_file);
+        }
+
+        if(!file_exists(base_path()."/resources/lang/es/custom.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/es.txt");
+            file_put_contents(base_path()."/resources/lang/es/custom.php", $tmp_file);
+        }
     }
 
     public function makeMigration(){

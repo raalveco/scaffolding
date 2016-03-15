@@ -1,41 +1,61 @@
 @extends('$LAYOUT_VIEW$')
 
 @section('view')
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="$PREFIX_URL$">{{ trans('custom.home') }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>{{ trans('$TITLE$') }}</span>
+        </li>
+    </ul>
+</div>
+
+<!-- BEGIN PAGE TITLE-->
 <h3 class="page-title">
     {{ trans('$TITLE$') }}
 </h3>
+<!-- END PAGE TITLE-->
 
 <div class="row">
-    <div class="col-md-12 col-sm-12">
-        <div class="portlet box blue">
+    <div class="col-md-12">
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+        <!-- END EXAMPLE TABLE PORTLET-->
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet box green">
             <div class="portlet-title">
-                <div class="actions">
-                    <div class="btn-group">
-                        <a class="btn btn-sm grey" href="$PREFIX_URL$/$TABLE$/create">
-                            <i class="fa fa-plus"></i> {{ trans('$NEW_TITLE$') }} </i>
-                        </a>
-                    </div>
+                <div class="caption"></div>
+                <div class="tools">
+					<div class="dt-buttons">
+						<a href="$PREFIX_URL$/$TABLE$/create" class="dt-button buttons-print btn default" tabindex="0" aria-controls="sample_2">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>{{ trans('$NEW_TITLE$') }}</span>
+						</a>
+					</div>
                 </div>
             </div>
             <div class="portlet-body">
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover" id="sample_2">
                     <thead>
-                    <tr>
-                        $FIELD_TITLE$
-                        <td style="text-align: center"></td>
-                    </tr>
+                        <tr>
+                            $FIELD_TITLE$
+                            <td style="text-align: center"></td>
+                            <td style="text-align: center"></td>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach($$TABLE$ as $$TABLE_SINGULAR$)
                             <tr class="odd gradeX">
                                 $FIELD_DATA$
-                                <td style="text-align: center; vertical-align: middle; width: 90px !important; padding: 5px 0 5px 5px;">
-                                    <a href="$PREFIX_URL$/$TABLE$/{{$$TABLE_SINGULAR$->id}}/edit" class="btn btn-sm yellow" style="width: 35px;">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a href="#" data-id="{{$$TABLE_SINGULAR$->id}}" class="btn btn-sm red deleteModal" style="width: 35px;">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
+                                <td>
+                                    <a class="label label-sm label-success">activo</a>
+                                </td>
+                                <td>
+                                    <a href="$PREFIX_URL$/$TABLE$/{{$$TABLE_SINGULAR$->id}}/edit" class="btn yellow-crusta"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    <a href="javascript:;"  data-id="{{$$TABLE_SINGULAR$->id}}" class="btn red deleteModal"><i class="glyphicon glyphicon-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -43,15 +63,17 @@
                 </table>
             </div>
         </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
     </div>
 </div>
+
 @stop
 
 @section('javascript_page')
 <script>
     jQuery(document).ready(function($) {
-        var app = new App();
-        app.orderedTableInit('.table', 0, 'asc');
+        var app = new Admin();
+        app.tableInit('.table', '<?php echo App::getLocale(); ?>');
 
         $(".deleteModal").on("click", function(){
             app.throwConfirmationModal('<?php echo trans('$DELETE_TITLE$'); ?>','<?php echo trans('$DELETE_CONFIRMATION$'); ?>','$PREFIX_URL$/$TABLE$/delete', $(this).data("id"));
