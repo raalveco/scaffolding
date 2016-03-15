@@ -17,6 +17,7 @@
     ],
     "autoload": {
         "classmap": [
+            "src",
             "src/commands"
         ]
     },
