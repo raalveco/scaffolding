@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use \App\Models\$MODEL$
 
 class $SEEDER_NAME$ extends Seeder {
 
