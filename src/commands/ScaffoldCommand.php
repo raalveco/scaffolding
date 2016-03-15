@@ -1,4 +1,4 @@
-<?php namespace Scaffolding\Commands;
+<?php namespace Raalveco\Scaffolding\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -17,6 +17,7 @@ class ScaffoldCommand extends Command {
     protected $model_template;
     protected $controller_template;
     protected $lang_template;
+    protected $lang_es_template;
     protected $route_template;
     protected $index_template;
     protected $new_template;
@@ -25,8 +26,13 @@ class ScaffoldCommand extends Command {
 
     protected $model_name;
     protected $plural_name;
-    protected $prefix;
+    protected $views_prefix;
+    protected $routes_prefix;
+    protected $layout;
     protected $active;
+    protected $gender;
+    protected $singular;
+    protected $plural;
 
     protected $fillables;
 
@@ -40,6 +46,7 @@ class ScaffoldCommand extends Command {
         $this->model_template = file_get_contents(__DIR__."/../templates/model.txt");
         $this->controller_template = file_get_contents(__DIR__."/../templates/controller.txt");
         $this->lang_template = file_get_contents(__DIR__."/../templates/lang.txt");
+        $this->lang_es_template = file_get_contents(__DIR__."/../templates/lang.txt");
         $this->route_template = file_get_contents(__DIR__."/../templates/route.txt");
 
         $this->index_template = file_get_contents(__DIR__."/../templates/index.txt");
@@ -49,13 +56,24 @@ class ScaffoldCommand extends Command {
         $this->active = true;
     }
 
-    public function init($model_name, $plural_name){
+    public function init($model_name, $plural_name, $view_layout, $views_prefix = "", $routes_prefix = "", $active = true){
         $this->model_name = $model_name;
         $this->plural_name = $plural_name;
 
-        $this->setPrefix();
-        $this->setActive();
+        $this->view_layout = trim($view_layout);
+        $this->views_prefix = trim(str_replace("/",".",$views_prefix));
+        $this->routes_prefix = trim($routes_prefix);
+
         $this->getFields();
+    }
+
+    public function setGender($gender = "M"){
+        $this->gender = $gender;
+    }
+
+    public function setNumbers($singular, $plural){
+        $this->singular = $singular;
+        $this->plural = $plural;
     }
 
     public function saveFiles(){
@@ -78,26 +96,41 @@ class ScaffoldCommand extends Command {
         }
 
         file_put_contents(base_path()."/resources/lang/en/".Str::lower($this->plural_name).".php", $this->lang_template);
-        file_put_contents(base_path()."/resources/lang/es/".Str::lower($this->plural_name).".php", $this->lang_template);
+        file_put_contents(base_path()."/resources/lang/es/".Str::lower($this->plural_name).".php", $this->lang_es_template);
 
         file_put_contents(app_path()."/Http/routes.php", $this->route_template, FILE_APPEND);
 
-        if(!file_exists(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix : ""))){
-            mkdir(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix : ""));
+        if(!file_exists(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : ""))){
+            mkdir(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : ""));
         }
 
-        if(!file_exists(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name))){
-            mkdir(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name));
+        if(!file_exists(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : "")."/".Str::lower($this->plural_name))){
+            mkdir(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : "")."/".Str::lower($this->plural_name));
         }
 
-        file_put_contents(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name)."/index.blade.php", $this->index_template);
-        file_put_contents(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name)."/new.blade.php", $this->new_template);
-        file_put_contents(base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "").Str::lower($this->plural_name)."/edit.blade.php", $this->edit_template);
+        file_put_contents(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : "")."/".Str::lower($this->plural_name)."/index.blade.php", $this->index_template);
+        file_put_contents(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : "")."/".Str::lower($this->plural_name)."/new.blade.php", $this->new_template);
+        file_put_contents(base_path()."/resources/views/".($this->views_prefix != "" ? str_replace(".","/", $this->views_prefix) : "")."/".Str::lower($this->plural_name)."/edit.blade.php", $this->edit_template);
 
-        $src = __DIR__."/../layout";
-        $dest = base_path()."/resources/views/".($this->prefix != "" ? $this->prefix."/" : "");
+        if(!file_exists(base_path()."/resources/lang/es/auth.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/auth.txt");
+            file_put_contents(base_path()."/resources/lang/es/auth.php", $tmp_file);
+        }
 
-        shell_exec("cp -r $src $dest");
+        if(!file_exists(base_path()."/resources/lang/es/pagination.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/pagination.txt");
+            file_put_contents(base_path()."/resources/lang/es/pagination.php", $tmp_file);
+        }
+
+        if(!file_exists(base_path()."/resources/lang/es/passwords.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/passwords.txt");
+            file_put_contents(base_path()."/resources/lang/es/passwords.php", $tmp_file);
+        }
+
+        if(!file_exists(base_path()."/resources/lang/es/validation.php")){
+            $tmp_file = file_get_contents(__DIR__."/../templates/lang/validation.txt");
+            file_put_contents(base_path()."/resources/lang/es/validation.php", $tmp_file);
+        }
     }
 
     public function makeMigration(){
@@ -108,6 +141,7 @@ class ScaffoldCommand extends Command {
         $data_up = '$table->engine = \'InnoDB\';
 
             ';
+
         $data_up .= '$table->increments(\'id\');
 
             ';
@@ -129,12 +163,34 @@ class ScaffoldCommand extends Command {
             ';
             }
             else{
+                $p1 = "";
+
+                if($field->param1){
+                    if(is_numeric($field->param1)){
+                        $p1 = ", ".$field->param1;
+                    }
+                    else{
+                        $p1 = ", '".$field->param1."'";
+                    }
+                }
+
+                $p2 = "";
+
+                if($field->param2){
+                    if(is_numeric($field->param2)){
+                        $p2 = ", ".$field->param2;
+                    }
+                    else{
+                        $p2 = ", '".$field->param2."'";
+                    }
+                }
+
                 if($is_required){
-                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\');
+                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\''.$p1.$p2.');
             ';
                 }
                 else{
-                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\')->nullable();
+                    $data_up .= '$table->'.$field->type.'(\''.$field->name.'\''.$p1.$p2.')->nullable();
             ';
                 }
             }
@@ -158,6 +214,19 @@ class ScaffoldCommand extends Command {
     }
 
     public function makeModel(){
+        $rules = '';
+        if($this->fields) foreach($this->fields as $field){
+            $rule = "";
+            if(!empty($field->options)){
+                $rule = implode("|", $field->options);
+                $rules .= '"'.$field->name.'" => "'.$rule.'",
+        ';
+            }
+        }
+        $rules = trim($rules);
+
+        $this->model_template = str_replace('$RULES$', $rules, $this->model_template);
+
         $this->model_template = str_replace('$NAME$', Str::title($this->model_name), $this->model_template);
         $this->model_template = str_replace('$FIELDS$', $this->fillables, $this->model_template);
     }
@@ -200,133 +269,12 @@ class ScaffoldCommand extends Command {
 
         $this->controller_template = str_replace('$FIELDS_GET$', $fields_get, $this->controller_template);
 
-        $validations = "";
-        if($this->fields) foreach($this->fields as $field){
-
-            if(!empty($field->options)){
-                foreach($field->options as $option){
-                    if($option == "unique"){
-                        $validations .= '
-        if($MODEL$::whereRaw("'.$field->name." = '$".$field->name."'".'")->count() > 0){
-            Session::flash("error", trans("$TABLE$.notifications.already_register"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/create")->withInput();
-        }
-        ';
-                    }
-
-                    if($option == "required" && $field->name != "active"){
-                        $validations .= '
-        if($'.$field->name.' == ""){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_missing"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/create")->withInput();
-        }
-        ';
-                    }
-                }
-            }
-
-            if($field->type == "integer"){
-                $validations .= '
-        if(!is_numeric($'.$field->name.')){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_is_integer"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/create")->withInput();
-        }
-        ';
-            }
-
-            if($field->type == "decimal"){
-                $validations .= '
-        if(!is_numeric($'.$field->name.')){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_is_decimal"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/create")->withInput();
-        }
-        ';
-            }
-        }
-
-        $validations = trim($validations);
-
-        $this->controller_template = str_replace('$VALIDATIONS$', $validations, $this->controller_template);
-
-        $validations_update = "";
-        if($this->fields) foreach($this->fields as $field){
-            if(!empty($field->options)){
-                foreach($field->options as $option){
-                    if($option == "unique"){
-                        $validations_update .= '
-        if($MODEL$::whereRaw("'.$field->name." = '$".$field->name."'".' AND id <> $'.$this->model_name.'->id")->count() > 0){
-            Session::flash("error", trans("$TABLE$.notifications.already_register"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/$'.$this->model_name.'->id/edit")->withInput();
-        }
-        ';
-                    }
-
-                    if($option == "required" && $field->name != "active"){
-                        $validations_update .= '
-        if($'.$field->name.' == ""){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_missing"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/$'.$this->model_name.'->id/edit")->withInput();
-        }
-        ';
-                    }
-                }
-            }
-
-            if($field->type == "integer"){
-                $validations_update .= '
-        if(!is_numeric($'.$field->name.')){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_is_integer"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/$'.$this->model_name.'->id/edit")->withInput();
-        }
-        ';
-            }
-
-            if($field->type == "decimal"){
-                $validations_update .= '
-        if(!is_numeric($'.$field->name.')){
-            Session::flash("error", trans("$TABLE$.notifications.field_'.$field->name.'_is_decimal"));
-
-            return Redirect::to("$PREFIX_URL$/$TABLE$/$'.$this->model_name.'->id/edit")->withInput();
-        }
-        ';
-            }
-        }
-
-        $validations_update = trim($validations_update);
-
-        $this->controller_template = str_replace('$VALIDATIONS_UPDATE$', $validations_update, $this->controller_template);
-
-        $fields_create = "";
-        if($this->fields) foreach($this->fields as $field){
-            if($field->name == "active" && $this->active !== true && $this->active != "true") {
-                continue;
-            }
-
-            $fields_create .= "'".$field->name."'".' => $'.$field->name.',
-                ';
-        }
-
-        $fields_create = trim($fields_create);
-
-        if(Str::endsWith($fields_create, ",")){
-            $fields_create = substr($fields_create,0, strlen($fields_create) - 1);
-        }
-
-        $this->controller_template = str_replace('$FIELDS_CREATE$', trim($fields_create), $this->controller_template);
-
         $fields_update = "";
         if($this->fields) foreach($this->fields as $field){
             if($field->name == "active" && $this->active !== true && $this->active != "true") {
                 continue;
             }
-            $fields_update .= "$".$this->model_name."->".$field->name.' = $'.$field->name.';
+            $fields_update .= "$".$this->model_name."->".$field->name.' = $request->'.$field->name.';
         ';
         }
 
@@ -338,11 +286,13 @@ class ScaffoldCommand extends Command {
         $this->controller_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->controller_template);
         $this->controller_template = str_replace('$TABLE_SINGULAR$', Str::lower($this->model_name), $this->controller_template);
 
-        $this->controller_template = str_replace('$PREFIX_VIEW$', $this->prefix ? Str::lower($this->prefix)."." : "", $this->controller_template);
-        $this->controller_template = str_replace('$PREFIX_URL$', $this->prefix ? "/".Str::lower($this->prefix) : "", $this->controller_template);
+        $this->controller_template = str_replace('$PREFIX_VIEW$', $this->views_prefix ? Str::lower($this->views_prefix)."." : "", $this->controller_template);
+        $this->controller_template = str_replace('$PREFIX_URL$', $this->routes_prefix ? "/".Str::lower($this->routes_prefix) : "", $this->controller_template);
     }
 
     public function makeTranslate(){
+        $this->makeSpanishTranslate();
+
         $fields_lang = "";
         if($this->fields) foreach($this->fields as $field){
             $fields_lang .= '"'.$field->name.'" => "'.Str::title($field->name).'",
@@ -413,32 +363,6 @@ class ScaffoldCommand extends Command {
         $notifications_lang .= '"delete_confirmation" => "Are you sure, that you will delete selected '.Str::lower($this->model_name).'?",
         ';
 
-        if($this->fields) foreach($this->fields as $field) {
-
-            if (!empty($field->options)) {
-                foreach ($field->options as $option) {
-                    if ($option == "required") {
-                        $notifications_lang .= '"field_' . $field->name . '_missing" => "The field ' . Str::lower($field->name) . ' is required.",
-        ';
-                    }
-                }
-            }
-
-            if ($field->type == "integer") {
-                if ($option == "required") {
-                    $notifications_lang .= '"field_' . $field->name . '_is_integer" => "The field ' . Str::lower($field->name) . ' must contain an integer value.",
-        ';
-                }
-            }
-
-            if ($field->type == "decimal") {
-                if ($option == "required") {
-                    $notifications_lang .= '"field_' . $field->name . '_is_decimal" => "The field ' . Str::lower($field->name) . ' must contain an numeric value.",
-        ';
-                }
-            }
-        }
-
         $notifications_lang = trim($notifications_lang);
 
         if(Str::endsWith($notifications_lang, ",")){
@@ -470,12 +394,137 @@ class ScaffoldCommand extends Command {
         $this->lang_template = str_replace('$VALIDATIONS$', $validations_lang, $this->lang_template);
     }
 
+    public function makeSpanishTranslate(){
+        $fields_lang = "";
+        if($this->fields) foreach($this->fields as $field){
+            $fields_lang .= '"'.$field->name.'" => "'.Str::title($field->name).'",
+        ';
+        }
+
+        $fields_lang = trim($fields_lang);
+
+        if(Str::endsWith($fields_lang, ",")){
+            $fields_lang = substr($fields_lang,0, strlen($fields_lang) - 1);
+        }
+
+        $this->lang_es_template = str_replace('$FIELDS$', $fields_lang, $this->lang_es_template);
+
+        $titles_lang = "";
+        $titles_lang .= '"index" => "'.Str::title($this->plural).'",
+        ';
+
+        if($this->gender == "M"){
+            $titles_lang .= '"new" => "Nuevo '.Str::title($this->singular).'",
+        ';
+        }
+        else{
+            $titles_lang .= '"new" => "Nueva '.Str::title($this->singular).'",
+        ';
+        }
+
+        $titles_lang .= '"edit" => "Editar '.Str::title($this->singular).'",
+        ';
+        $titles_lang .= '"delete" => "Eliminar '.Str::title($this->singular).'",
+        ';
+
+        $titles_lang = trim($titles_lang);
+
+        if(Str::endsWith($titles_lang, ",")){
+            $titles_lang = substr($titles_lang,0, strlen($titles_lang) - 1);
+        }
+
+        $this->lang_es_template = str_replace('$TITLES$', $titles_lang, $this->lang_es_template);
+
+        $buttons_lang = "";
+        $buttons_lang .= '"register" => "Registrar",
+        ';
+        $buttons_lang .= '"update" => "Modificar",
+        ';
+        $buttons_lang .= '"cancel" => "Cancelar",
+        ';
+        $buttons_lang .= '"yes" => "SI",
+        ';
+        $buttons_lang .= '"no" => "NO",
+        ';
+
+        $buttons_lang = trim($buttons_lang);
+
+        if(Str::endsWith($buttons_lang, ",")){
+            $buttons_lang = substr($buttons_lang,0, strlen($buttons_lang) - 1);
+        }
+
+        $this->lang_es_template = str_replace('$BUTTONS$', $buttons_lang, $this->lang_es_template);
+
+        if($this->gender == "M"){
+            $gender = "el";
+            $gro = "o";
+        }
+        else{
+            $gender = "la";
+            $gro = "a";
+        }
+
+        $notifications_lang = "";
+        $notifications_lang .= '"register_successful" => "'.Str::title($gender).' '.Str::lower($this->singular).' ha sido registrad'.$gro.' correctamente.",
+        ';
+        $notifications_lang .= '"update_successful" => "'.Str::title($gender).' '.Str::lower($this->singular).' ha sido modificad'.$gro.' correctamente.",
+        ';
+        $notifications_lang .= '"activated_successful" => "'.Str::title($gender).' '.Str::lower($this->singular).' ha sido activad'.$gro.' correctamente.",
+        ';
+        $notifications_lang .= '"deactivated_successful" => "'.Str::title($gender).' '.Str::lower($this->singular).' ha sido desactivad'.$gro.' correctamente.",
+        ';
+        $notifications_lang .= '"delete_successful" => "'.Str::title($gender).' '.Str::lower($this->singular).' ha sido eliminad'.$gro.' correctamente.",
+        ';
+        $notifications_lang .= '"already_register" => "'.Str::title($gender).' '.Str::lower($this->singular).' ya había sido registrad'.$gro.' previamente.",
+        ';
+        $notifications_lang .= '"no_exists" => "'.Str::title($gender).' '.Str::lower($this->singular).' no existe.",
+        ';
+        $notifications_lang .= '"delete_confirmation" => "¿Estás seguro que deseas eliminar '.$gender.' '.Str::lower($this->singular).' seleccionad'.$gro.'?",
+        ';
+
+        $notifications_lang = trim($notifications_lang);
+
+        if(Str::endsWith($notifications_lang, ",")){
+            $notifications_lang = substr($notifications_lang,0, strlen($notifications_lang) - 1);
+        }
+
+        $this->lang_es_template = str_replace('$NOTIFICATIONS$', $notifications_lang, $this->lang_es_template);
+
+        $validations_lang = "";
+        $validations_lang .= '"required" => "El campo es requerido.",
+        ';
+        $validations_lang .= '"email" => "El campo no es un email válido.",
+        ';
+        $validations_lang .= '"digits" => "El campo solo acepta dígitos.",
+        ';
+        $validations_lang .= '"number" => "El campo solo acepta valores numéricos.",
+        ';
+        $validations_lang .= '"minlength" => "El tamaño mínimo del campo es {0}.",
+        ';
+        $validations_lang .= '"maxlength" => "El tamaño máximo del campo es {0}.",
+        ';
+        $validations_lang .= '"min" => "El valor máximo del campo es {0}.",
+        ';
+        $validations_lang .= '"max" => "El valor máximo del campo es {0}.",
+        ';
+        $validations_lang .= '"range" => "El valor del campo debe estar en el rango {0} - {1}.",
+        ';
+
+        $validations_lang = trim($validations_lang);
+
+        if(Str::endsWith($validations_lang, ",")){
+            $validations_lang = substr($validations_lang,0, strlen($validations_lang) - 1);
+        }
+
+        $this->lang_es_template = str_replace('$VALIDATIONS$', $validations_lang, $this->lang_es_template);
+    }
+
     public function makeRoutes(){
-        if($this->prefix == ""){
+        if($this->routes_prefix == ""){
             $this->route_template = str_replace('$PARAMS$', "", $this->route_template);
         }
         else{
-            $this->route_template = str_replace('$PARAMS$', '"prefix" => "'.$this->prefix.'"', $this->route_template);
+            $this->route_template = str_replace('$PARAMS$', '"prefix" => "'.$this->routes_prefix.'"', $this->route_template);
         }
 
         $routes = 'Route::get("/'.Str::lower($this->plural_name).'", "'.Str::title($this->plural_name).'Controller@index");
@@ -534,8 +583,9 @@ class ScaffoldCommand extends Command {
         $this->index_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->index_template);
         $this->index_template = str_replace('$TABLE_SINGULAR$', Str::lower($this->model_name), $this->index_template);
 
-        $this->index_template = str_replace('$PREFIX_VIEW$', $this->prefix ? Str::lower($this->prefix)."." : "", $this->index_template);
-        $this->index_template = str_replace('$PREFIX_URL$', $this->prefix ? "/".Str::lower($this->prefix) : "", $this->index_template);
+        $this->index_template = str_replace('$LAYOUT_VIEW$', $this->view_layout, $this->index_template);
+        $this->index_template = str_replace('$PREFIX_VIEW$', $this->views_prefix ? Str::lower($this->views_prefix)."." : "", $this->index_template);
+        $this->index_template = str_replace('$PREFIX_URL$', $this->routes_prefix ? "/".Str::lower($this->routes_prefix) : "", $this->index_template);
 
         $this->index_template = str_replace('$DELETE_TITLE$', Str::lower($this->plural_name).'.titles.delete', $this->index_template);
         $this->index_template = str_replace('$DELETE_CONFIRMATION$', Str::lower($this->plural_name).'.notifications.delete_confirmation', $this->index_template);
@@ -548,8 +598,9 @@ class ScaffoldCommand extends Command {
         $this->new_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->new_template);
         $this->new_template = str_replace('$TABLE_SINGULAR$', Str::lower($this->model_name), $this->new_template);
 
-        $this->new_template = str_replace('$PREFIX_VIEW$', $this->prefix ? Str::lower($this->prefix)."." : "", $this->new_template);
-        $this->new_template = str_replace('$PREFIX_URL$', $this->prefix ? "/".Str::lower($this->prefix) : "", $this->new_template);
+        $this->new_template = str_replace('$LAYOUT_VIEW$', $this->view_layout, $this->new_template);
+        $this->new_template = str_replace('$PREFIX_VIEW$', $this->views_prefix ? Str::lower($this->views_prefix)."." : "", $this->new_template);
+        $this->new_template = str_replace('$PREFIX_URL$', $this->routes_prefix ? "/".Str::lower($this->routes_prefix) : "", $this->new_template);
 
         $fields_new = "";
         if($this->fields) foreach($this->fields as $field){
@@ -557,7 +608,8 @@ class ScaffoldCommand extends Command {
 
             if(!empty($field->options)){
                 foreach($field->options as $option){
-                    if($option == "required"){
+                    $option = explode(":", $option);
+                    if($option[0] == "required"){
                         $is_required = '<span class="required"> * </span>';
                     }
                 }
@@ -638,17 +690,54 @@ class ScaffoldCommand extends Command {
             $messages_tmp = '-';
             if(!empty($field->options)){
                 foreach($field->options as $option){
-                    if($option == "required"){
+                    $option = explode(":", $option);
+
+                    if($option[0] == "required"){
                         $rules_tmp .= '
                 required: true,';
                         $messages_tmp .= '
                 required: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.required") ?>",';
                     }
-                    if($option == "email"){
+                    if($option[0] == "email"){
                         $rules_tmp .= '
                 email: true,';
                         $messages_tmp .= '
                 email: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.email") ?>",';
+                    }
+
+                    if ($option[0] == "maxlength") {
+                        $rules_tmp .= '
+                maxlength: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                maxlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.maxlength") ?>",';
+                    }
+
+                    if ($option[0] == "minlength") {
+                        $rules_tmp .= '
+                minlength: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                minlength: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.minlength") ?>",';
+                    }
+
+                    if ($option[0] == "max") {
+                        $rules_tmp .= '
+                max: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                max: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.max") ?>",';
+                    }
+
+                    if ($option[0] == "min") {
+                        $rules_tmp .= '
+                min: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                min: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.min") ?>",';
+                    }
+
+                    if ($option[0] == "between") {
+                        $rules_tmp .= '
+                range: [' . $option[1].", ". $option[2] . '],';
+                        $messages_tmp .= '
+                range: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.range") ?>",';
                     }
                 }
             }
@@ -723,8 +812,9 @@ class ScaffoldCommand extends Command {
         $this->edit_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->edit_template);
         $this->edit_template = str_replace('$TABLE_SINGULAR$', Str::lower($this->model_name), $this->edit_template);
 
-        $this->edit_template = str_replace('$PREFIX_VIEW$', $this->prefix ? Str::lower($this->prefix)."." : "", $this->edit_template);
-        $this->edit_template = str_replace('$PREFIX_URL$', $this->prefix ? "/".Str::lower($this->prefix) : "", $this->edit_template);
+        $this->edit_template = str_replace('$LAYOUT_VIEW$', $this->view_layout, $this->edit_template);
+        $this->edit_template = str_replace('$PREFIX_VIEW$', $this->views_prefix ? Str::lower($this->views_prefix)."." : "", $this->edit_template);
+        $this->edit_template = str_replace('$PREFIX_URL$', $this->routes_prefix ? "/".Str::lower($this->routes_prefix) : "", $this->edit_template);
 
         $fields_update = "";
         if($this->fields) foreach($this->fields as $field){
@@ -732,7 +822,9 @@ class ScaffoldCommand extends Command {
 
             if(!empty($field->options)){
                 foreach($field->options as $option){
-                    if($option == "required"){
+                    $option = explode(":", $option);
+
+                    if($option[0] == "required"){
                         $is_required = '<span class="required"> * </span>';
                     }
                 }
@@ -786,19 +878,42 @@ class ScaffoldCommand extends Command {
         if($this->fields) foreach($this->fields as $field){
             $rules_tmp = '-';
             $messages_tmp = '-';
-            if(!empty($field->options)){
-                foreach($field->options as $option){
-                    if($option == "required"){
+            if(!empty($field->options)) {
+                foreach ($field->options as $option) {
+                    $option = explode(":", $option);
+
+                    if ($option[0] == "required") {
                         $rules_tmp .= '
                 required: true,';
                         $messages_tmp .= '
-                required: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.required") ?>",';
+                required: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.required") ?>",';
                     }
-                    if($option == "email"){
+                    if ($option[0] == "email") {
                         $rules_tmp .= '
                 email: true,';
                         $messages_tmp .= '
-                email: "<?php echo trans("'.Str::lower($this->plural_name).'.validations.email") ?>",';
+                email: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.email") ?>",';
+                    }
+
+                    if ($option[0] == "max") {
+                        $rules_tmp .= '
+                max: ' . $option[1] . ',';
+                        $messages_tmp .= '
+                max: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.max") ?>",';
+                    }
+
+                    if ($option[0] == "min") {
+                    $rules_tmp .= '
+                min: ' . $option[1] . ',';
+                    $messages_tmp .= '
+                min: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.min") ?>",';
+                    }
+
+                    if ($option[0] == "between") {
+                        $rules_tmp .= '
+                range: [' . $option[1].", ". $option[2] . '],';
+                        $messages_tmp .= '
+                range: "<?php echo trans("' . Str::lower($this->plural_name) . '.validations.range") ?>",';
                     }
                 }
             }
@@ -902,28 +1017,6 @@ class ScaffoldCommand extends Command {
         $this->seed_template = str_replace('$MODEL$', Str::title($this->model_name), $this->seed_template);
     }
 
-    public function setPrefix(){
-        try{
-            $prefix = $this->option("prefix");
-        }
-        catch(\InvalidArgumentException $e){
-            $prefix = "";
-        }
-
-        $this->prefix = $prefix;
-    }
-
-    public function setActive(){
-        try{
-            $active = $this->option("active");
-        }
-        catch(\InvalidArgumentException $e){
-            $active = true;
-        }
-
-        $this->active = $active;
-    }
-
     public function getFields(){
         if($this->fields){
             return $this->fields;
@@ -933,43 +1026,40 @@ class ScaffoldCommand extends Command {
 
         $fields = collect();
 
-        if($fields_string == ""){
+        $fields_string = str_replace('"','', $fields_string);
+
+        $fields_array = explode(",", $fields_string);
+
+        if($fields_array) foreach($fields_array as $field_tmp){
+            $field_tmp = explode("[", $field_tmp);
+
+            $field_info = explode(":", $field_tmp[0]);
+
             $field = new \stdClass();
-            $field->name = "name";
-            $field->type = "string";
-            $field->options = array("required");
+            $field->name = trim($field_info[0]);
+            $field->type = trim($field_info[1]);
 
-            $fields->push($field);
+            $field->param1 = isset($field_info[2]) ? trim($field_info[2]) : false;
+            $field->param2 = isset($field_info[3]) ? trim($field_info[3]) : false;
+            $field->param3 = isset($field_info[4]) ? trim($field_info[4]) : false;
 
-            $field = new \stdClass();
-            $field->name = "active";
-            $field->type = "boolean";
-            $field->options = array("required");
+            $field->type = $field_info[1];
 
-            $fields->push($field);
-        }
-        else{
-            $fields_string = str_replace('"','', $fields_string);
+            $field->options = array();
 
-            $fields_array = explode(",", $fields_string);
+            $field_tmp[1] = str_replace("]","",$field_tmp[1]);
 
-            if($fields_array) foreach($fields_array as $field_tmp){
-                $field_tmp = explode(":", $field_tmp);
+            if($field_tmp[1]){
+                $field_rules = explode("|", $field_tmp[1]);
 
-                $field = new \stdClass();
-                $field->name = $field_tmp[0];
-                $field->type = $field_tmp[1];
-
-                $field->options = array();
-
-                $i = 2;
-                while(isset($field_tmp[$i])){
-                    $field->options[$i-2] = $field_tmp[$i];
+                $i = 0;
+                while(isset($field_rules[$i])){
+                    $field->options[$i] = $field_rules[$i];
                     $i++;
                 }
-
-                $fields->push($field);
             }
+
+            $fields->push($field);
         }
 
         $this->fields = $fields;
@@ -981,20 +1071,35 @@ class ScaffoldCommand extends Command {
     {
         $argument = $this->argument("model");
 
-        //echo $name."\n";
-        //echo $plural_name."\n";
-        //echo $modal_name."\n"."\n";
+        $fields = $this->option("fields");
 
-        //$spanish_name = $this->ask('Escribe el nombre de la entidad en Singular?');
-        //$spanish_name = Str::title($spanish_name);
+        if(!$fields){
+            echo "Los campos del modelo no han sido definidos.";
 
-        //$spanish_name_plural = $this->ask('Escribe el nombre de la entidad en Plural?');
-        //$spanish_name_plural = Str::title($spanish_name_plural);
+            return;
+        }
 
-        //echo "\n".$spanish_name."\n";
-        //echo $spanish_name_plural."\n";
+        $singular = $this->ask(Str::singular($argument).' en español se escribe: ',Str::lower(Str::singular($argument)));
+        $singular = Str::upper($singular);
 
-        $this->init(Str::lower($argument), Str::plural($argument));
+        $plural = $this->ask(Str::plural($argument).' en español se escribe: ',Str::lower(Str::plural($argument)));
+        $plural = Str::upper($plural);
+
+        $gender = $this->ask('Cual es el género del Modelo '.$argument.': ',"M");
+        $gender = Str::upper($gender);
+
+        $routes_prefix = $this->ask('Prefijo que se utilizará en las rutas y urls: '," ");
+        $routes_prefix = Str::lower($routes_prefix);
+
+        $layout = $this->ask('Layout con el que se crearan las vistas: ',"layout.base");
+        $layout = Str::lower($layout);
+
+        $views_prefix = $this->ask('Carpeta donde se guardaran las vistas: '," ");
+        $views_prefix = Str::lower($views_prefix);
+
+        $this->init(Str::lower($argument), Str::plural($argument), $layout, $views_prefix, $routes_prefix);
+        $this->setGender($gender);
+        $this->setNumbers($singular, $plural);
 
         $this->makeMigration();
         $this->makeModel();
@@ -1009,29 +1114,17 @@ class ScaffoldCommand extends Command {
         $this->saveFiles();
     }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
     protected function getArguments()
     {
         return [
-            ['model', InputArgument::REQUIRED, 'An example argument.'],
+            ['model', InputArgument::REQUIRED, 'Model Name.']
         ];
     }
 
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
     protected function getOptions()
     {
         return [
-            ['fields', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-            ['prefix', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-            ['active', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
+            ['fields', null, InputOption::VALUE_OPTIONAL, "Entity's Fields.", null]
         ];
     }
 

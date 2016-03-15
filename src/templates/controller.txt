@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -19,15 +19,10 @@ class $CONTROLLER_NAME$ extends Controller {
 		return View::make('$PREFIX_VIEW$$TABLE$.new');
 	}
 
-	public function store(){
-	    $FIELDS_GET$
-		$VALIDATIONS$
+	public function store(Request $request){
+	    $this->validate($request, $MODEL$::rules);
 
-		$MODEL$::create(
-			array(
-				$FIELDS_CREATE$
-			)
-		);
+		$MODEL$::create($request);
 
 		Session::flash('success', trans("$TABLE$.notifications.register_successful"));
 
@@ -46,17 +41,16 @@ class $CONTROLLER_NAME$ extends Controller {
         return View::make('$PREFIX_VIEW$$TABLE$.edit')->with("$TABLE_SINGULAR$", $$TABLE_SINGULAR$);
 	}
 
-	public function update(){
-        $$TABLE_SINGULAR$ = $MODEL$::find(Input::get("id"));
+	public function update(Request $request){
+        $this->validate($request, $MODEL$::rules);
+
+        $$TABLE_SINGULAR$ = $MODEL$::find($request->id);
 
         if(!$$TABLE_SINGULAR$){
             Session::flash('error', trans("$TABLE$.notifications.no_exists"));
 
             return Redirect::to("$PREFIX_URL$/$TABLE$");
         }
-
-        $FIELDS_GET$
-        $VALIDATIONS_UPDATE$
 
         $FIELDS_UPDATE$
 
@@ -101,7 +95,7 @@ class $CONTROLLER_NAME$ extends Controller {
         return Redirect::to("$PREFIX_URL$/$TABLE$");
     }
 
-    public function destroy(){
+    public function destroy(Request $request){
         $$TABLE_SINGULAR$ = $MODEL$::find(Input::get("id"));
 
         if(!$$TABLE_SINGULAR$){

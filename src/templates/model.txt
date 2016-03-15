@@ -6,4 +6,8 @@ class $NAME$ extends Model {
 
 	protected $fillable = [$FIELDS$];
 
+	public static $rules = [
+		$RULES$
+	];
+
 }

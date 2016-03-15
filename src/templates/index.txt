@@ -1,4 +1,4 @@
-@extends('$PREFIX_VIEW$layout.base')
+@extends('$LAYOUT_VIEW$')
 
 @section('view')
 <h3 class="page-title">

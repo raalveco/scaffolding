@@ -1,7 +1,7 @@
-<?php namespace Scaffolding;
+<?php namespace Raalveco\Scaffolding;
 
 use Illuminate\Support\ServiceProvider;
-use Scaffolding\Commands\ScaffoldCommand;
+use Raalveco\Scaffolding\Commands\ScaffoldCommand;
 
 class ScaffoldingServiceProvider extends ServiceProvider {
 
@@ -12,9 +12,7 @@ class ScaffoldingServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-        $this->publishes([
-            __DIR__.'/metronic' => public_path('metronic')
-        ], 'scaffolding');
+
 	}
 
 	/**

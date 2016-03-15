@@ -15,19 +15,14 @@
             "role": "Developer"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {},
     "autoload": {
-        "psr-4": {
-            "Scaffolding\\": "src/"
-        }
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "php artisan vendor:publish --tag=scaffolding"
-        ],
-        "post-update-cmd": [
-            "php artisan vendor:publish --tag=scaffolding"
+        "classmap": [
+            "src",
+            "src/commands",
+            "src/libraries",
+            "src/models"
         ]
-    }
+    },
+    "minimum-stability": "dev",
+    "require": {}
 }
