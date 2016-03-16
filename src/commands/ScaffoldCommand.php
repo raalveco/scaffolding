@@ -534,7 +534,7 @@ class ScaffoldCommand extends Command {
 
     public function makeRoutes(){
         if($this->routes_prefix == ""){
-            $this->route_template = str_replace('$PARAMS$', '"middleware" => ["web"]', $this->route_template);
+            $this->route_template = str_replace('$PARAMS$', '"middleware" => ["web"]' , $this->route_template);
         }
         else{
             $this->route_template = str_replace('$PARAMS$', '"prefix" => "'.$this->routes_prefix.'", "middleware" => ["web"]', $this->route_template);
