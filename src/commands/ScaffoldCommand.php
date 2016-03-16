@@ -78,7 +78,7 @@ class ScaffoldCommand extends Command {
     }
 
     public function saveFiles(){
-        file_put_contents(base_path()."/database/migrations/".date("Y_m_d_His")."_create_table_".Str::lower($this->plural_name)."_table.php", $this->migration_template);
+        file_put_contents(base_path()."/database/migrations/".date("Y_m_d_His")."_create_".Str::lower($this->plural_name)."_table.php", $this->migration_template);
         file_put_contents(base_path()."/database/seeds/".Str::title($this->plural_name)."Seeder.php", $this->seed_template);
 
         if(!file_exists(app_path()."/Models")){
