@@ -132,16 +132,6 @@ class ScaffoldCommand extends Command {
             $tmp_file = file_get_contents(__DIR__."/../templates/lang/validation.txt");
             file_put_contents(base_path()."/resources/lang/es/validation.php", $tmp_file);
         }
-
-        if(!file_exists(base_path()."/resources/lang/en/custom.php")){
-            $tmp_file = file_get_contents(__DIR__."/../templates/lang/en.txt");
-            file_put_contents(base_path()."/resources/lang/en/custom.php", $tmp_file);
-        }
-
-        if(!file_exists(base_path()."/resources/lang/es/custom.php")){
-            $tmp_file = file_get_contents(__DIR__."/../templates/lang/es.txt");
-            file_put_contents(base_path()."/resources/lang/es/custom.php", $tmp_file);
-        }
     }
 
     public function makeMigration(){
@@ -866,7 +856,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="checkbox"{{$'.Str::lower($this->model_name).'->'.Str::lower($field->name).' == 1 ? '."'".'checked="checked"'."'".' : ""}} name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
+                                <input type="checkbox"{{$'.Str::lower($this->model_name).'->'.Str::lower($field->name).' == 1 ? '."'".'checked="checked"'."'".' : ""}} name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="warning" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
                             </div>
                         </div>
                         ';

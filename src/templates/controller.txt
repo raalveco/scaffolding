@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -20,9 +20,9 @@ class $CONTROLLER_NAME$ extends Controller {
 	}
 
 	public function store(Request $request){
-	    $this->validate($request, $MODEL$::rules);
+	    $this->validate($request, $MODEL$::$rules);
 
-		$MODEL$::create($request);
+		$MODEL$::create($request->all());
 
 		Session::flash('success', trans("$TABLE$.notifications.register_successful"));
 
@@ -42,7 +42,7 @@ class $CONTROLLER_NAME$ extends Controller {
 	}
 
 	public function update(Request $request){
-        $this->validate($request, $MODEL$::rules);
+        $this->validate($request, $MODEL$::$rules);
 
         $$TABLE_SINGULAR$ = $MODEL$::find($request->id);
 
