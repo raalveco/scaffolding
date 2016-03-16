@@ -46,7 +46,7 @@
                         @foreach($$TABLE$ as $$TABLE_SINGULAR$)
                             <tr class="odd gradeX">
                                 $FIELD_DATA$
-                                <td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     <a href="$PREFIX_URL$/$TABLE$/{{$$TABLE_SINGULAR$->id}}/edit" class="btn btn-sm yellow-crusta"><i class="glyphicon glyphicon-pencil"></i></a>
                                     <a href="javascript:;" data-id="{{$$TABLE_SINGULAR$->id}}" class="btn btn-sm red deleteModal"><i class="glyphicon glyphicon-trash"></i></a>
                                 </td>
