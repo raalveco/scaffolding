@@ -686,7 +686,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="checkbox"{{$'.Str::lower($this->model_name).'->'.Str::lower($field->name).' == 1 '." ? '".'checked="checked"'."'".' : ""}} name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
+                                <input type="checkbox"{{old("' . Str::lower($field->name) . '") == 1 '." ? '".'checked="checked"'."'".' : ""}} name="'.Str::lower($field->name).'" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.yes") }}" data-off-text="{{ trans("' . Str::lower($this->plural_name) . '.buttons.no") }}" >
                             </div>
                         </div>
                         ';
@@ -1085,9 +1085,16 @@ class ScaffoldCommand extends Command {
             $field->name = trim($field_info[0]);
             $field->type = trim($field_info[1]);
 
-            $field->param1 = isset($field_info[2]) ? trim($field_info[2]) : false;
-            $field->param2 = isset($field_info[3]) ? trim($field_info[3]) : false;
-            $field->param3 = isset($field_info[4]) ? trim($field_info[4]) : false;
+            if($field->name != "active"){
+                $field->param1 = isset($field_info[2]) ? trim($field_info[2]) : false;
+                $field->param2 = isset($field_info[3]) ? trim($field_info[3]) : false;
+                $field->param3 = isset($field_info[4]) ? trim($field_info[4]) : false;
+            }
+            else{
+                $field->param1 = false;
+                $field->param2 = false;
+                $field->param3 = false;
+            }
 
             $field->type = $field_info[1];
 
