@@ -562,7 +562,7 @@ class ScaffoldCommand extends Command {
                         ';
             }
             else{
-                $fields_index .= '<td style="text-align: center"></td>
+                $fields_index .= '<td style="text-align: center">Status</td>
                         ';
             }
         }
@@ -635,7 +635,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control"/>
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{old("' . Str::lower($field->name) . '")}}" class="form-control"/>
                             </div>
                         </div>
                         ';
@@ -647,7 +647,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control digits"/>
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{old("' . Str::lower($field->name) . '")}}" class="form-control digits"/>
                             </div>
                         </div>
                         ';
@@ -659,7 +659,7 @@ class ScaffoldCommand extends Command {
                                 {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
                             </label>
                             <div class="col-md-4">
-                                <input type="text" name="' . Str::lower($field->name) . '" value="{{Input::old("' . Str::lower($field->name) . '")}}" class="form-control numeric"/>
+                                <input type="text" name="' . Str::lower($field->name) . '" value="{{old("' . Str::lower($field->name) . '")}}" class="form-control numeric"/>
                             </div>
                         </div>
                         ';
