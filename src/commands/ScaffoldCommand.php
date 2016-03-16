@@ -1019,6 +1019,10 @@ class ScaffoldCommand extends Command {
                 $value = "Str::random()";
             }
 
+            if($field->type == "text"){
+                $value = "Str::random()";
+            }
+
             if($field->type == "integer"){
                 $value = "rand(5,100)";
             }
