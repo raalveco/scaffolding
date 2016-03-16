@@ -606,6 +606,7 @@ class ScaffoldCommand extends Command {
 
     public function makeNewView(){
         //Make New View
+        $this->new_template = str_replace('$TITLE$', Str::lower($this->plural_name).'.titles.index', $this->new_template);
         $this->new_template = str_replace('$NEW_TITLE$', Str::lower($this->plural_name).'.titles.new', $this->new_template);
 
         $this->new_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->new_template);
@@ -821,6 +822,7 @@ class ScaffoldCommand extends Command {
 
     public function makeEditView(){
         //Make Edit View
+        $this->edit_template = str_replace('$TITLE$', Str::lower($this->plural_name).'.titles.index', $this->edit_template);
         $this->edit_template = str_replace('$UPDATE_TITLE$', Str::lower($this->plural_name).'.titles.edit', $this->edit_template);
 
         $this->edit_template = str_replace('$TABLE$', Str::lower($this->plural_name), $this->edit_template);
