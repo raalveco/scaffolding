@@ -1,6 +1,21 @@
 @extends('$LAYOUT_VIEW$')
 
 @section('view')
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="$PREFIX_URL$">{{ trans('custom.home') }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="$PREFIX_URL$/$TABLE$">{{ trans('$TITLE$') }}</a>
+        </li>
+        <li>
+            <span>{{ trans('$UPDATE_TITLE$') }}</span>
+        </li>
+    </ul>
+</div>
+
 <h3 class="page-title">
     {{ trans('$UPDATE_TITLE$') }}
 </h3>

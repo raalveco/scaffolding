@@ -8,7 +8,7 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <span>{{ trans('$TITLE$') }}</span>
+            <a href="$PREFIX_URL$/$TABLE$">{{ trans('$TITLE$') }}</a>
         </li>
         <li>
             <span>{{ trans('$NEW_TITLE$') }}</span>
