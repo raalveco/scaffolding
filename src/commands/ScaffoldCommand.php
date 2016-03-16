@@ -1085,10 +1085,12 @@ class ScaffoldCommand extends Command {
             $field->name = trim($field_info[0]);
             $field->type = trim($field_info[1]);
 
+            $field->param1 = isset($field_info[2]) ? trim($field_info[2]) : false;
+            $field->param2 = isset($field_info[3]) ? trim($field_info[3]) : false;
+            $field->param3 = isset($field_info[4]) ? trim($field_info[4]) : false;
+
             if($field->name != "active"){
-                $field->param1 = isset($field_info[2]) ? trim($field_info[2]) : false;
-                $field->param2 = isset($field_info[3]) ? trim($field_info[3]) : false;
-                $field->param3 = isset($field_info[4]) ? trim($field_info[4]) : false;
+
             }
             else{
                 $field->param1 = false;
@@ -1108,6 +1110,11 @@ class ScaffoldCommand extends Command {
 
                     $i = 0;
                     while(isset($field_rules[$i])){
+                        if($field->name == "active" && $field_rules[$i] == "required"){
+                            $i++;
+                            continue;
+                        }
+
                         $field->options[$i] = $field_rules[$i];
                         $i++;
                     }
