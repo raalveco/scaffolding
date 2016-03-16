@@ -55,7 +55,7 @@
 @section('javascript_page')
 <script>
     jQuery(document).ready(function($) {
-        var app = new App();
+        var app = new Admin();
 
         var rules = {
             $RULES$

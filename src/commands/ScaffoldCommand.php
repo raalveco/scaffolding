@@ -642,6 +642,18 @@ class ScaffoldCommand extends Command {
                         ';
             }
 
+            if($field->type == "text") {
+                $fields_new .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <textarea name="' . Str::lower($field->name) . '" class="form-control">{{old("' . Str::lower($field->name) . '")}}</textarea>
+                            </div>
+                        </div>
+                        ';
+            }
+
             if($field->type == "integer") {
                 $fields_new .= '<div class="form-group">
                             <label class="control-label col-md-3">
