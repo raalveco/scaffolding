@@ -506,7 +506,7 @@ class ScaffoldCommand extends Command {
         ';
         $validations_lang .= '"maxlength" => "El tamaño máximo del campo es {0}.",
         ';
-        $validations_lang .= '"min" => "El valor máximo del campo es {0}.",
+        $validations_lang .= '"min" => "El valor mínimo del campo es {0}.",
         ';
         $validations_lang .= '"max" => "El valor máximo del campo es {0}.",
         ';
