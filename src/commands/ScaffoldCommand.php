@@ -872,6 +872,17 @@ class ScaffoldCommand extends Command {
                         ';
                     }
                 }
+                elseif($field->type == "text") {
+                    $fields_update .= '<div class="form-group">
+                            <label class="control-label col-md-3">
+                                {{ trans("' . Str::lower($this->plural_name) . '.fields.' . Str::lower($field->name) . '") }} ' . $is_required . '
+                            </label>
+                            <div class="col-md-4">
+                                <textarea name="' . Str::lower($field->name) . '" class="form-control">{{$'.Str::lower($this->model_name).'->'.Str::lower($field->name).'}}</textarea>
+                            </div>
+                        </div>
+                        ';
+                }
                 else{
                     $fields_update .= '<div class="form-group">
                             <label class="control-label col-md-3">
