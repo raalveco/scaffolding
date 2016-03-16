@@ -581,7 +581,7 @@ class ScaffoldCommand extends Command {
                 $url_active = '$PREFIX_URL$'.'/'.Str::lower($this->plural_name)."/'.$".Str::lower($this->model_name)."->id.'/active";
                 $url_deactive = '$PREFIX_URL$'.'/'.Str::lower($this->plural_name)."/'.$".Str::lower($this->model_name)."->id.'/deactive";
 
-                $data_index .= '<td style="text-align: center; vertical-align: middle; width: 50px;"><a href="{{$'.Str::lower($this->model_name).'->active ? '."'$url_deactive'"." : '".$url_active."'".'}}" class="btn btn-sm {{$'.Str::lower($this->model_name).'->active ? "green" : "red"}}" style="width: 35px; margin-right: 0px;"><i class="fa {{$'.Str::lower($this->model_name).'->active ? "fa-check" : "fa-times"}}"></i></a></td>
+                $data_index .= '<td style="width: 50px;text-align: center; vertical-align: middle;"><a href="{{$'.Str::lower($this->model_name).'->active ? '."'$url_deactive'"." : '".$url_active."'".'}}" class="btn btn-sm {{$'.Str::lower($this->model_name).'->active ? "green" : "red"}}" style="width: 35px; margin-right: 0px;"><i class="fa {{$'.Str::lower($this->model_name).'->active ? "fa-check" : "fa-times"}}"></i></a></td>
                                 ';
             }
         }
