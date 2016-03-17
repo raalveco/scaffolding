@@ -211,7 +211,7 @@ class ScaffoldCommand extends Command {
 
         $this->schema_template = str_replace('$FIELDS$', $data_up, $this->schema_template);
 
-        $this->migration_template = str_replace('$CLASS$', "CreateTable".Str::title($this->plural_name)."Table", $this->migration_template);
+        $this->migration_template = str_replace('$CLASS$', "Create".Str::title($this->plural_name)."Table", $this->migration_template);
         $this->migration_template = str_replace('$UP$', $this->schema_template, $this->migration_template);
         $this->migration_template = str_replace('$DOWN$', "Schema::drop('".Str::lower($this->plural_name)."');", $this->migration_template);
     }
