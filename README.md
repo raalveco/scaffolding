@@ -1,68 +1,71 @@
-## Scaffold Generator - Laravel 5
+# Scaffolding - Laravel 5.2 & Metronic Admin Template
 
-Documentation for the Laravel Framework can be found on the [Laravel website](http://laravel.com/docs/5.0).
+Library that simplifies creating CRUD, with which we will create Controllers, Models, Views, Migrations, Seeds & Routes in seconds.
 
-It is mandatory to buy the regular license for the use of "metronic web template", you can do it here [Metronic Purchase Web] (http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469).
+## Instalación
 
-### Instalation & Configuration
+To install the package you need to add dependency on our composer.json at the root of laravel.
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `raalveco/scaffolding` and the publish the scaffolding with the instruction `php artisan vendor:publish --tag=scaffolding`.
+```js
+{
+    "require": {
+        "raalveco/scaffolding": "dev-master"
+    }
+}
+```
 
-	"require-dev": {
-		"raalveco/scaffolding": "dev-master"
-	}
-	
-	"scripts": {
-		"post-update-cmd": [
-			"php artisan vendor:publish --tag=scaffolding"
-		]
-	}
-
-The next step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
-
-    'Scaffolding\ScaffoldingServiceProvider',
-
-
-Next, update Composer from the Terminal:
-
+```bash
     composer update
+```
 
-### Usage
+## Laravel 5.2
+
+In the $providers array add the following service provider for this package.
+
+```php
+// config/app.php
+
+'providers' => [
+    Raalveco\Scaffolding\ScaffoldingServiceProvider::class,
+];
+```
+
+## Usage
 
 If you want to create a simple catalog for an entity, you must enter the console the following command:
 
-    php artisan make:scaffold Book
+```bash
+    php artisan make:scaffold Customer --fields="rfc:string:13[required|maxlength:13|minlength:12], first_name:string:100[required|alpha], last_name:string:100[required|alpha], email:string:100[required|email]"
+```
 
-This will create the basis for a Book model structure, will be created the following files:
+This will create the bass for a Book model structure, will be created the following files:
 
-    model
-    migration
-    seed
-    controller
-    translate
-    views
-        index
-        new
-        edit
+```txt
+    Controller:
+        app/Http/CustomersController.php
+    Model:
+        app/Models/Customer.php
+    Migration:
+        database/migrations/0000_00_00_000000_create_customers_table.php
+    Seed:
+        database/seeds/CustomersSeeder.php
+    Lang:
+        resources/lang/en/customers.php
+        resources/lang/es/customers.php
+    Views:
+        resources/views/customers/index.blade.php
+        resources/views/customers/new.blade.php
+        resources/views/customers/edit.blade.php
+    Routes:
+        app/Http/routes.php (Edited)
+```
 
-Additionally, the following sentences are added to file routes.php
+After running the command: make:scaffold, we should run a migrate and if necessary run the seeder that just generated.
 
-    Route::group([], function()
-    {
-        Route::get("/books", "BooksController@index");
-        Route::get("/books/create", "BooksController@create");
-        Route::post("/books/store", "BooksController@store");
-        Route::get("/books/{id}/edit", "BooksController@edit");
-        Route::post("/books/update", "BooksController@update");
-        Route::get("/books/{id}/active", "BooksController@active");
-        Route::get("/books/{id}/deactive", "BooksController@deactive");
-        Route::post("/books/delete", "BooksController@destroy");
-    });
+```bash
+    php artisan migrate
+```
 
-If we want to specify the fields we want to use in the state I must specify when running the command: `make:scaffold`
-
-    php artisan make:scaffold Book --fields="isbn:string:required:unique,title:string:required,author:string:required,edition:integer,active:boolean"
-
-If you want to add a prefix to the sights and routes, you can do so by adding as shown in the following command:
-
-    php artisan make:scaffold Book --prefix=admin
+```bash
+    php artisan db:seed --class=CustomersSeeder
+```
