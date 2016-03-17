@@ -1,4 +1,4 @@
-# Scaffolding - Laravel 5.2 & Metronic Admin Template
+## Scaffolding - Laravel 5.2 & Metronic Admin Template
 
 Library that simplifies creating CRUD, with which we will create Controllers, Models, Views, Migrations, Seeds & Routes in seconds.
 
